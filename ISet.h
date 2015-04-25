@@ -28,49 +28,42 @@ template < class T > class Set : public ISet < T >
 protected:
 
 	T *set;  // Множество
-	T *temp; // Временный массив
-	unsigned int size_set;  // Размер множества
+	int size_set;  // Размер множества
 
 public:
 		Set (  )	
 		{
-			set = new (nothrow) T [0];
-			size_set = 0;
+			size_set = 0;			// счетчик введенных чисел
+			set = 0;
 		}
 
 		void add ( const T& elem ) //Добавить элемент
 		{
 			T element = elem;
-			
-
+            int * values = NULL;
+			bool flag=false;
 			for (int i = 0; i<size_set; i++)
 				if (element == set[i])
 				{	
 					
 					cout<<"This element is already in set"<<endl;
-					return;
-				} 
+					flag=true;
+				}; 
 
-				
-					temp = new (nothrow) T [size_set];
+				if (flag==false)
+				{
+					size_set++;
+ 
+					set = (int*) realloc (values, size_set * sizeof(int)); //увеличиваем массив на 1
+ 
+					values = set;
+					values[size_set - 1] = element;                      // добавить к массиву только что введённое число
+				}
 					
-					for (int i=0; i<size_set; i++)
-						temp[i] = set[i];
-
-					delete [] set;
-
-					size_set=size_set+1;
-					
-					set = new (nothrow) T [size_set];
-
-					for(int i = 0; i < size_set; i++)
-					set[i] = temp[i];
-					
-					delete [] temp;
-
-					set[size_set-1] = element;
-				
-			
+			for (int i = 1; i<size_set; i++)
+			{
+				cout<<set[i]<<" ";
+			}
 		
 		};
 							
@@ -78,37 +71,36 @@ public:
 		{
 			T element = elem;
 			bool flag = true;
-			
-			temp = new (nothrow) T [sizeset-1];
+			int * values = NULL;
 
 			for (int i = 0; i < size_set; i++)
 			{
-				cout<<"i="<<i<<endl;
 				if (element == set[i])
 				{	
 					flag = false;
 					
-					int k=0;
-					
-					for( int j = 0; j< size_set; j++)
+					for( int j = i; j< size_set; j++)
 					{	
-						if (set[i] != element)
-						{
-							temp[k] = set[i];
-							k++;
-						}
-					}
+							set[j] = set[j+1];
+					};
+
+					size_set--;
+					set = (int*) realloc (values, size_set * sizeof(int)); //уменьшаем размер на 1
 
 				} 
 
 			}
+
 			if (flag == true)
 			{
 				cout<<"This element isn't found";
 				return;
 			}
 
-		
+			for (int i = 1; i<size_set; i++)
+			{
+				cout<<set[i]<<" ";
+			}
 
 		};
 
@@ -134,4 +126,5 @@ public:
 		};
 };
 
-#endif
+#endif 
+
