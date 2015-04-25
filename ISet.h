@@ -1,5 +1,5 @@
-#ifndef __ISET_H
-#define __ISET_H	
+#ifndef _ISET_H
+#define _ISET_H	
 
 	#include <iostream> 
 	#include <clocale>
@@ -29,18 +29,19 @@ protected:
 
 	T *set;  // Множество
 	int size_set;  // Размер множества
+	int * values;
 
 public:
 		Set (  )	
 		{
 			size_set = 0;			// счетчик введенных чисел
-			set = 0;
+			set = new T [size_set];
+			values = NULL;
 		}
 
 		void add ( const T& elem ) //Добавить элемент
 		{
 			T element = elem;
-            int * values = NULL;
 			bool flag=false;
 			for (int i = 0; i<size_set; i++)
 				if (element == set[i])
@@ -60,10 +61,11 @@ public:
 					values[size_set - 1] = element;                      // добавить к массиву только что введённое число
 				}
 					
-			for (int i = 1; i<size_set; i++)
+			for (int i = 0; i<size_set; i++)
 			{
 				cout<<set[i]<<" ";
 			}
+			cout<<endl;
 		
 		};
 							
@@ -71,7 +73,6 @@ public:
 		{
 			T element = elem;
 			bool flag = true;
-			int * values = NULL;
 
 			for (int i = 0; i < size_set; i++)
 			{
@@ -84,7 +85,7 @@ public:
 							set[j] = set[j+1];
 					};
 
-					size_set--;
+					size_set=size_set-1;
 					set = (int*) realloc (values, size_set * sizeof(int)); //уменьшаем размер на 1
 
 				} 
@@ -97,10 +98,11 @@ public:
 				return;
 			}
 
-			for (int i = 1; i<size_set; i++)
+			for (int i = 0; i<size_set; i++)
 			{
 				cout<<set[i]<<" ";
 			}
+			cout<<endl;
 
 		};
 
@@ -109,22 +111,20 @@ public:
 			
 			T element = elem;
 			
-			bool flag = false;
+			bool flag=false;
 
-			for (int i = 0; i<size_set; i++)
+			for (int i = 1; i<size_set; i++)
 				if (element == set[i])
 				{	
-					flag = true;
+					flag=true;
 				} 
-			return flag;
-
+				return flag;
 		};
 
 		int size() const	//размер множества
 		{
-			return size_set;
+			return (size_set);
 		};
 };
 
 #endif 
-
